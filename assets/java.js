@@ -2,60 +2,68 @@
 
 // variables
 
-var searchItem = ["cats", "dark souls", "anime", "skateboarding"];
+var preSets = ["cats", "dark souls", "anime", "skateboarding"];
 
-var newSearch = $(".form-control").val().trim();
+var newSearch = "";
 
-var queryURL = "";
+// get gif to show
+function showGif() {
 
-
-
-// var preSets = ["cats", "dark souls", "anime", "skateboarding"]
-
-
-function showGif(searchTerm) {
-    // get that gif ajaxing
-    console.log(searchTerm)
-    queryUrl = "https://api.giphy.com/v1/gifs/search?api_key=UJXg9RazU2fUZvzxmjek7lfO2CbYQFhl&q=" + searchTerm + "&limit=10&offset=0&rating=G&lang=en";
+    newSearch = $(".form-control").val().trim();
+    var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=UJXg9RazU2fUZvzxmjek7lfO2CbYQFhl&q=" + newSearch + "&limit=10&offset=0&rating=G&lang=en";
 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        console.log(response);
+
+        var theGif = response.data;
+
+        var gifImg = response.data[i].images;
+
+        $("#gifDump").empty();
+
+        for (var i = 0; i = theGif.length; i++) {
+
+            var newGifDiv = $("<div>");
+
+            var newGif = $("<img>");
+            newGif.attr("src", gifImg.fixed_width_still.url);
+            newGif.attr("data-still", gifImg.fixed_width_still.url);
+            newGif.attr("data-animate", gifImg.fixed_width.url);
+
+            newGifDiv.append(newGif);
+
+            $("#gifDump").prepend(newGifDiv);
 
 
-        // console.log(theGifs);
 
 
-        var theGifs = response.data.data[i];
 
 
+        }
+
+        console.log(theGif);
     });
-    // console.log(showGif);
 }
 
+// make my pre set searched load button
 
 function preSetButts() {
-    // loop over search item array 
-    //creat button, add attr with the search term 
 
-    var preButton = $("<button>")
-    //set text
-    // append
-    for (var i = 0; i < searchItem; i++) {
+    $("#preset-dump").empty();
 
-        $("presetsDump").append;
+    for (var i = 0; i < preSets.length; i++) {
 
 
+        // var gifImg = response.data[i].images;
+        var preButton = $("<button>");
+        preButton.addClass("preGifs");
+        preButton.text(preSets[i]);
+        // preButton.attr("src", gifImg.fixed_width_still.url);
+        // preButton.attr("data-still", gifImg.fixed_width_still.url);
 
-
-
-
-
-
-
-        // console.log(theGifs);
+        $("#preset-dump").append(preButton);
 
     }
 }
@@ -65,37 +73,26 @@ preSetButts();
 //review activity 10 
 // on click get data attr
 // call showGif with ()
-console.log(showGif(searchItem));
-
-
-
-
-
-
-
-// function searchIt(){
-
-
-// };
-
-
-
-
+// console.log(showGif(preSets));
 
 // recieve info from button
-$("#button").on("click", function () {
+$("#button").on("click", function (event) {
     event.preventDefault();
 
+    var newButtSearch = $(".form-control").val().trim();
 
-    searchItem.push(newSearch);
+    // $("#preset-dump").empty();
 
-    console.log(searchItem);
+    preSets.push(newButtSearch);
 
-    getGifs();
+    console.log(preSets);
 
-    console.log(response);
+    preSetButts();
+
+    showGif();
 
 });
+
 
 
 

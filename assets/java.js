@@ -18,20 +18,35 @@ function showGif() {
     }).then(function (response) {
 
         var theGif = response.data;
+        console.log(theGif);
 
-        var gifImg = response.data[i].images;
 
         $("#gifDump").empty();
 
-        for (var i = 0; i = theGif.length; i++) {
+        for (var i = 0; i < theGif.length; i++) {
+
+
+            var gifImg = response.data[i].images;
+            console.log(gifImg);
 
             var newGifDiv = $("<div>");
 
             var newGif = $("<img>");
+
             newGif.attr("src", gifImg.fixed_width_still.url);
             newGif.attr("data-still", gifImg.fixed_width_still.url);
             newGif.attr("data-animate", gifImg.fixed_width.url);
+            newGif.attr("data-state", "still");
+            var pTag = ("<p>");
+            newGif.text(pTag, response.data[i].rating);
 
+            
+            
+
+
+           
+
+            newGif.append(pTag);
             newGifDiv.append(newGif);
 
             $("#gifDump").prepend(newGifDiv);
@@ -45,7 +60,26 @@ function showGif() {
 
         console.log(theGif);
     });
-}
+
+
+    $(this).on("click", function () {
+
+        var state = $(this).attr("data-state");
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+
+
+
+        };
+    });
+    
+};
+
+
+
+
+
 
 // make my pre set searched load button
 
@@ -62,6 +96,7 @@ function preSetButts() {
         preButton.text(preSets[i]);
         // preButton.attr("src", gifImg.fixed_width_still.url);
         // preButton.attr("data-still", gifImg.fixed_width_still.url);
+        // preButton.attr("data-animate", gifImg.fixed_width.url);
 
         $("#preset-dump").append(preButton);
 
@@ -69,13 +104,9 @@ function preSetButts() {
 }
 preSetButts();
 
-//clikcevent for buttons
-//review activity 10 
-// on click get data attr
-// call showGif with ()
-// console.log(showGif(preSets));
 
-// recieve info from button
+
+
 $("#button").on("click", function (event) {
     event.preventDefault();
 
@@ -91,9 +122,9 @@ $("#button").on("click", function (event) {
 
     showGif();
 
+
+
 });
-
-
 
 
 
